@@ -56,6 +56,13 @@ namespace gitlibrary
                 var changes = repo.Diff.Compare<TreeChanges>(branch.Tip.Tree, DiffTargets.Index | DiffTargets.WorkingDirectory);
                 Commands.Stage(repo, changes.Select(c => c.Path));
                 Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
+                // Replace "upstreamBranchName" with the name of the upstream branch you want to track
+                var upstreamBranch = repo.Branches["upstreamBranchName"];
+
+                // Set the upstream branch for the current branch
+                repo.Branches.Update(branch,
+                    b => b.Remote = upstreamBranch.RemoteName,
+                    b => b.UpstreamBranch = upstreamBranch.CanonicalName);
                 // push to the server
                 repo.Network.Push(repo.Branches[branchName], pushOptions);
                // repo.Network.Push(branch, pushOptions);
