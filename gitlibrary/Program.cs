@@ -54,9 +54,9 @@ namespace gitlibrary
                     CredentialsProvider = (_, __, ___) =>
                         new UsernamePasswordCredentials { Username = token, Password = "" }
                 };
-                repo.Network.Push(repo.Head, pushOptions);
+                repo.Network.Push(branch, pushOptions);
                 // push to the server
-                repo.Network.Push(repo.Head, pushOptions);
+              //  repo.Network.Push(repo.Head, pushOptions);
                // repo.Network.Push(branch, pushOptions);
                 //  repopush.Network.Push(branch, options);
 
