@@ -57,11 +57,11 @@ namespace gitlibrary
                 Commands.Stage(repo, changes.Select(c => c.Path));
                 Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
                 // Replace "upstreamBranchName" with the name of the upstream branch you want to track
-                var upstreamBranch = repo.Branches["upstreamBranchName"];
+                var upstreamBranch = repo.Branches[branchName];
 
                
                 // push to the server
-                repo.Network.Push(branch, pushOptions);
+                repo.Network.Push(upstreamBranch, pushOptions);
                // repo.Network.Push(branch, pushOptions);
                 //  repopush.Network.Push(branch, options);
 
