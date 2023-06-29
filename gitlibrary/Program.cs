@@ -48,7 +48,7 @@ namespace gitlibrary
                 Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
                 repo.Branches.Update(branch,
                    b => b.Remote = repo.Network.Remotes["gitlibrary"].Name,
-                   b => b.UpstreamBranch = repo.Head.CanonicalName);
+                   b => b.UpstreamBranch = branch.CanonicalName);
                 var pushOptions = new PushOptions
                 {
                     CredentialsProvider = (_, __, ___) =>
