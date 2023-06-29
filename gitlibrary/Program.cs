@@ -27,15 +27,15 @@ namespace gitlibrary
                       Commands.Checkout(repo, masterBranch);
                   }
 
-                  // Remove the branch if it already exists
-                  //Branch branch = repo.Branches[branchName];
-                  //if (branch != null)
-                  //{
-                  //    repo.Branches.Remove(branch);
-                  //}
+                // Remove the branch if it already exists
+                Branch branch = repo.Branches[branchName];
+                if (branch != null)
+                {
+                    repo.Branches.Remove(branch);
+                }
 
-                  // Create the branch
-                  Branch branch = repo.CreateBranch(branchName) as Branch;
+                // Create the branch
+                branch = repo.CreateBranch(branchName) as Branch;
 
 
                 // Commit and push changes
