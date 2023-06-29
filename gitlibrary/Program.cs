@@ -47,7 +47,7 @@ namespace gitlibrary
                         new UsernamePasswordCredentials { Username = token, Password = "" }
                 };
                 // update branch references
-                repo.Branches.Update(repo.Head, updater =>
+                repo.Branches.Update(branch, updater =>
                 {
                     updater.Remote = repo.Network.Remotes["gitlibrary"].Name;
                     updater.UpstreamBranch = repo.Head.CanonicalName;
