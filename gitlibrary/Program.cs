@@ -14,17 +14,9 @@ namespace gitlibrary
         {
               using (var repo = new Repository("D:\\IbaseIt\\Practice\\GitLibrary\\"))
               {
-                var token = "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";
-                const string commitSha = "6f7d97f62da85093701559b0945fc322e0b5bbb9";
+                var token = "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";                
                   const string branchName = "gitlibrary/feature/test-branch-csharp";
-                  Commit commit = repo.Lookup<Commit>(commitSha);
-
-                // Push the branch to the remote repository
-                var pushOptions = new PushOptions
-                {
-                    CredentialsProvider = (_, __, ___) =>
-                        new UsernamePasswordCredentials { Username = token, Password = "" }
-                };
+                
                 Remote remotebranch = repo.Network.Remotes["gitlibrary"];
 
                   // Ensure the branch is not the currently checked out branch
@@ -46,29 +38,33 @@ namespace gitlibrary
                   Branch branch = repo.CreateBranch(branchName) as Branch;
 
 
-                  // Set up remote tracking for the branch               
-                  Remote remote = repo.Network.Remotes["gitlibrary"];
+                // Commit and push changes
+                var author = new Signature("Anilkumar", "anilkumar-ibaseit", DateTimeOffset.Now);
+                var committer = author;            
+                var pushOptions = new PushOptions
+                {
+                    CredentialsProvider = (_, __, ___) =>
+                        new UsernamePasswordCredentials { Username = token, Password = "" }
+                };
+                // update branch references
+                repo.Branches.Update(repo.Head, updater =>
+                {
+                    updater.Remote = repo.Network.Remotes["gitlibrary"].Name;
+                    updater.UpstreamBranch = repo.Head.CanonicalName;
+                });
+                repo.Merge(branch, repo.Config.BuildSignature(DateTimeOffset.Now));
+                var changes = repo.Diff.Compare<TreeChanges>(branch.Tip.Tree, DiffTargets.Index | DiffTargets.WorkingDirectory);
+                Commands.Stage(repo, changes.Select(c => c.Path));
+                Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
+                // push to the server
+                repo.Network.Push(repo.Branches[branchName], pushOptions);
+               // repo.Network.Push(branch, pushOptions);
+                //  repopush.Network.Push(branch, options);
 
-                  // The local branch "buggy-3" will track a branch also named "buggy-3"
-                  // in the repository pointed at by "origin"
-                  if (remote != null)
-                  {
-                      repo.Branches.Update(branch,
-                          b => b.Remote = remote.Name,
-                          b => b.UpstreamBranch = branch.CanonicalName);
-                  }
-
-
-                  // Thus Push will know where to push this branch (eg. the remote)
-                  // and which branch it should target in the target repository
-                  // Disable SSL certificate verification
-                  options.CertificateCheck = (_cert, _valid, _sslErrors) => true;
-                  repo.Network.Push(branch, options);
-                  //  repopush.Network.Push(branch, options);
-
-                  if (branch != null)
+                if (branch != null)
                   {
                       Console.WriteLine("Branch created: " + branch.CanonicalName);
+                    Console.ReadLine();
                   }
               }
             
