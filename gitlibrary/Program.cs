@@ -64,7 +64,7 @@ namespace gitlibrary
                     b => b.Remote = upstreamBranch.RemoteName,
                     b => b.UpstreamBranch = upstreamBranch.CanonicalName);
                 // push to the server
-                repo.Network.Push(repo.Branches[branchName], pushOptions);
+                repo.Network.Push(branch, pushOptions);
                // repo.Network.Push(branch, pushOptions);
                 //  repopush.Network.Push(branch, options);
 
