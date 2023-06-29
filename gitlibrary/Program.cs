@@ -42,22 +42,19 @@ namespace gitlibrary
                 var author = new Signature("Anilkumar", "anilkumar-ibaseit", DateTimeOffset.Now);
                 var committer = author;            
                
-                // update branch references
-                repo.Branches.Update(repo.Head, updater =>
-                {
-                    updater.Remote = repo.Network.Remotes["gitlibrary"].Name;
-                    updater.UpstreamBranch = repo.Head.CanonicalName;
-                });
+                repo.Merge(branch, repo.Config.BuildSignature(DateTimeOffset.Now));
+                var changes = repo.Diff.Compare<TreeChanges>(branch.Tip.Tree, DiffTargets.Index | DiffTargets.WorkingDirectory);
+                Commands.Stage(repo, changes.Select(c => c.Path));
+                Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
+                repo.Branches.Update(repo.Head,
+                   b => b.Remote = repo.Network.Remotes["gitlibrary"].Name,
+                   b => b.UpstreamBranch = repo.Head.CanonicalName);
                 var pushOptions = new PushOptions
                 {
                     CredentialsProvider = (_, __, ___) =>
                         new UsernamePasswordCredentials { Username = token, Password = "" }
                 };
-                repo.Merge(branch, repo.Config.BuildSignature(DateTimeOffset.Now));
-                var changes = repo.Diff.Compare<TreeChanges>(branch.Tip.Tree, DiffTargets.Index | DiffTargets.WorkingDirectory);
-                Commands.Stage(repo, changes.Select(c => c.Path));
-                Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
-                
+                repo.Network.Push(repo.Head, pushOptions);
                 // push to the server
                 repo.Network.Push(repo.Head, pushOptions);
                // repo.Network.Push(branch, pushOptions);
