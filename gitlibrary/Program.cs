@@ -14,7 +14,7 @@ namespace gitlibrary
         {
               using (var repo = new Repository("D:\\IbaseIt\\Practice\\GitLibrary\\"))
               {
-                var token = "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";                
+                var token = "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";                
                   const string branchName = "gitlibrary/feature/test-branch-csharp";
                 
                 Remote remotebranch = repo.Network.Remotes["gitlibrary"];
