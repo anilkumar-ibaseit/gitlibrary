@@ -12,23 +12,20 @@ namespace gitlibrary
     {
         static void Main(string[] args)
         {
-            /*  using (var repo = new Repository("D:\\IbaseIt\\Practice\\GitLibrary\\"))
+              using (var repo = new Repository("D:\\IbaseIt\\Practice\\GitLibrary\\"))
               {
-                  const string commitSha = "6f7d97f62da85093701559b0945fc322e0b5bbb9";
+                var token = "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";
+                const string commitSha = "6f7d97f62da85093701559b0945fc322e0b5bbb9";
                   const string branchName = "gitlibrary/feature/test-branch-csharp";
                   Commit commit = repo.Lookup<Commit>(commitSha);
 
-                  // Push the branch to the remote repository
-                  PushOptions options = new PushOptions
-                  {
-                      CredentialsProvider = (_url, _user, _cred) =>
-                          new UsernamePasswordCredentials
-                          {
-                              Username = "anilkumar-ibaseit",
-                              Password = "Anil1@34"
-                          }
-                  };
-                  Remote remotebranch = repo.Network.Remotes["gitlibrary"];
+                // Push the branch to the remote repository
+                var pushOptions = new PushOptions
+                {
+                    CredentialsProvider = (_, __, ___) =>
+                        new UsernamePasswordCredentials { Username = token, Password = "" }
+                };
+                Remote remotebranch = repo.Network.Remotes["gitlibrary"];
 
                   // Ensure the branch is not the currently checked out branch
                   if (repo.Head.FriendlyName == branchName)
@@ -74,18 +71,18 @@ namespace gitlibrary
                       Console.WriteLine("Branch created: " + branch.CanonicalName);
                   }
               }
-            */
+            
 
-
+/*
             var remoteUrl = "https://github.com/anilkumar-ibaseit/gitlibrary.git";
             var branchName = "master";
-            var token = "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";
+            var token = "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";
 
             // Open the cloned repository
             using (var repo = new Repository("D:\\IbaseIt\\Practice\\GitLibrary\\"))
             {
                 // Commit and push changes
-                var author = new Signature("Anilkumar", "anilkumar.ibaseit@hotmail.com", DateTimeOffset.Now);
+                var author = new Signature("Anilkumar", "anilkumar-ibaseit", DateTimeOffset.Now);
                 var committer = author;
                 var commit = repo.Commit("Commit message", author, committer);
                 repo.Branches.Update(repo.Head,
@@ -97,7 +94,7 @@ namespace gitlibrary
                         new UsernamePasswordCredentials { Username = token, Password = "" }
                 };
                 repo.Network.Push(repo.Head, pushOptions);
-            }
+            }*/
         }
     }
 }
