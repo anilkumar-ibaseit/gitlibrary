@@ -47,7 +47,7 @@ namespace gitlibrary
                         new UsernamePasswordCredentials { Username = token, Password = "" }
                 };
                 // update branch references
-                repo.Branches.Update(branch, updater =>
+                repo.Branches.Update(repo.Head, updater =>
                 {
                     updater.Remote = repo.Network.Remotes["gitlibrary"].Name;
                     updater.UpstreamBranch = repo.Head.CanonicalName;
@@ -56,12 +56,9 @@ namespace gitlibrary
                 var changes = repo.Diff.Compare<TreeChanges>(branch.Tip.Tree, DiffTargets.Index | DiffTargets.WorkingDirectory);
                 Commands.Stage(repo, changes.Select(c => c.Path));
                 Commit commit = repo.Commit("Commit changes from master to new branch", author, committer);
-                // Replace "upstreamBranchName" with the name of the upstream branch you want to track
-                var upstreamBranch = repo.Branches[branchName];
-
-               
+                
                 // push to the server
-                repo.Network.Push(upstreamBranch, pushOptions);
+                repo.Network.Push(repo.Head, pushOptions);
                // repo.Network.Push(branch, pushOptions);
                 //  repopush.Network.Push(branch, options);
 
