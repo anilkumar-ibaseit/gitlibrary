@@ -59,10 +59,7 @@ namespace gitlibrary
                 // Replace "upstreamBranchName" with the name of the upstream branch you want to track
                 var upstreamBranch = repo.Branches["upstreamBranchName"];
 
-                // Set the upstream branch for the current branch
-                repo.Branches.Update(branch,
-                    b => b.Remote = upstreamBranch.RemoteName,
-                    b => b.UpstreamBranch = upstreamBranch.CanonicalName);
+               
                 // push to the server
                 repo.Network.Push(branch, pushOptions);
                // repo.Network.Push(branch, pushOptions);
